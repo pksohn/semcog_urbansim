@@ -22,8 +22,8 @@ orca.run([
     "households_relocation",
     "jobs_transition",
     "jobs_relocation",
-    "scheduled_demolition_events",
-    "scheduled_development_events",
+    # "scheduled_demolition_events",
+    # "scheduled_development_events",
     "feasibility",
     "set_target_vacancies",
     "residential_developer",
@@ -32,8 +32,8 @@ orca.run([
     "rsh_simulate",  # residential sales hedonic
     "hlcm_simulate",  # households location choice
     "elcm_simulate",  # employment location choice
-    "government_jobs_scaling_model",
-    "refiner",
+    # "government_jobs_scaling_model",
+    # "refiner",
     # "gq_model", Fixme: we have new data so need new approach
     # "travel_model", Fixme: on hold
     # "housing_value_update", Fixme: maybe we don't need
