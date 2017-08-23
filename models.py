@@ -551,6 +551,8 @@ def feasibility(parcels):
     feasibility = orca.get_table('feasibility').to_frame()
     for lid, df in parcels.large_area_id.to_frame().groupby('large_area_id'):
         orca.add_table('feasibility_' + str(lid), feasibility[feasibility.index.isin(df.index)])
+        if lid == 5:
+            print('FEASIBILITY LID 5')
 
 
 def add_extra_columns_nonres(df):

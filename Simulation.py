@@ -32,7 +32,7 @@ orca.run([
     "rsh_simulate",  # residential sales hedonic
     "hlcm_simulate",  # households location choice
     "elcm_simulate",  # employment location choice
-    "government_jobs_scaling_model",
+    # "government_jobs_scaling_model",
     "refiner",
     # "gq_model", Fixme: we have new data so need new approach
     # "travel_model", Fixme: on hold
