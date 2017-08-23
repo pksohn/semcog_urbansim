@@ -69,3 +69,7 @@ runs/
 coeffs
 debug
 output
+
+# Urbansim development
+environment.yml
+requirements.txt

@@ -489,6 +489,8 @@ def scheduled_development_events(buildings, iter_var, events_addition):
         all_buildings = parcel_utils.merge_buildings(b, sched_dev[b.columns], False, max_id)
         orca.add_injectable("max_building_id", max(all_buildings.index.max(), max_id))
         orca.add_table("buildings", all_buildings)
+        print('Adding {} scheduled developments to buildings table'
+              .format(len(sched_dev)))
 
         # Todo: maybe we need to impute some columns
         # Todo: parcel use need to be updated
@@ -504,6 +506,8 @@ def scheduled_demolition_events(buildings, households, jobs, iter_var, events_de
         drop_buildings = buildings[buildings.index.isin(sched_dev.building_id)].copy()
         buildings_idx = drop_buildings.index
         drop_buildings['year_demo'] = iter_var
+        print('Removing {} scheduled demolitions from buildings table'
+              .format(len(drop_buildings)))
 
         if orca.is_table("dropped_buildings"):
             prev_drops = orca.get_table("dropped_buildings").to_frame()
@@ -611,10 +615,46 @@ def run_developer(lid, forms, agents, buildings, supply_fname,
                                unplace_agents, pipeline)
 
 
+@orca.step('set_target_vacancies')
+def set_target_vacancies(parcels, households, jobs, buildings, year):
+    if year != 2016:
+        return
+
+    res_tv = {}
+    nonres_tv = {}
+
+    for lid, _ in parcels.large_area_id.to_frame().groupby('large_area_id'):
+
+        b = buildings.to_frame(['residential_units', 'job_spaces', 'large_area_id'])
+
+        num_hh = (households.large_area_id == lid).sum()
+        num_res_units = b[b.large_area_id == lid]['residential_units'].sum()
+        res_vacancy = (1 - num_hh / float(num_res_units))
+        if res_vacancy < 0:
+            res_vacancy = 0.01
+
+        num_jobs = (jobs.large_area_id == lid).sum()
+        num_job_spaces = b[b.large_area_id == lid]['job_spaces'].sum()
+        nonres_vacancy = (1 - num_jobs / float(num_job_spaces))
+        if nonres_vacancy < 0:
+            nonres_vacancy = 0.01
+
+        print('Initial residential vacancy in large area {}: {:.2f}'
+              .format(lid, res_vacancy))
+        print('Initial non-residential vacancy in large area {}: {:.2f}'
+              .format(lid, nonres_vacancy))
+
+        res_tv[lid] = res_vacancy
+        nonres_tv[lid] = nonres_vacancy
+
+    orca.add_injectable('res_tv', res_tv)
+    orca.add_injectable('nonres_tv', nonres_tv)
+
+
 @orca.step('residential_developer')
-def residential_developer(households, parcels, target_vacancies):
-    target_vacancies = target_vacancies.to_frame()
-    target_vacancies = target_vacancies[target_vacancies.year == orca.get_injectable('year')]
+def residential_developer(households, parcels, target_vacancies, res_tv):
+    # target_vacancies = target_vacancies.to_frame()
+    # target_vacancies = target_vacancies[target_vacancies.year == orca.get_injectable('year')]
     for lid, _ in parcels.large_area_id.to_frame().groupby('large_area_id'):
         run_developer(
             lid,
@@ -626,14 +666,15 @@ def residential_developer(households, parcels, target_vacancies):
             parcels.ave_unit_size,
             parcels.total_units,
             'res_developer.yaml',
-            target_vacancy=float(target_vacancies[target_vacancies.large_area_id == lid].res_target_vacancy_rate),
+            # target_vacancy=float(target_vacancies[target_vacancies.large_area_id == lid].res_target_vacancy_rate),
+            target_vacancy=res_tv[lid],
             add_more_columns_callback=add_extra_columns_res)
 
 
 @orca.step()
-def non_residential_developer(jobs, parcels, target_vacancies):
-    target_vacancies = target_vacancies.to_frame()
-    target_vacancies = target_vacancies[target_vacancies.year == orca.get_injectable('year')]
+def non_residential_developer(jobs, parcels, target_vacancies, nonres_tv):
+    # target_vacancies = target_vacancies.to_frame()
+    # target_vacancies = target_vacancies[target_vacancies.year == orca.get_injectable('year')]
     for lid, _ in parcels.large_area_id.to_frame().groupby('large_area_id'):
         run_developer(
             lid,
@@ -645,7 +686,8 @@ def non_residential_developer(jobs, parcels, target_vacancies):
             parcels.ave_unit_size,
             parcels.total_job_spaces,
             'nonres_developer.yaml',
-            target_vacancy=float(target_vacancies[target_vacancies.large_area_id == lid].non_res_target_vacancy_rate),
+            # target_vacancy=float(target_vacancies[target_vacancies.large_area_id == lid].non_res_target_vacancy_rate),
+            target_vacancy=nonres_tv[lid],
             add_more_columns_callback=add_extra_columns_nonres)
 
 

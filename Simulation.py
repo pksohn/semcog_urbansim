@@ -25,6 +25,7 @@ orca.run([
     "scheduled_demolition_events",
     "scheduled_development_events",
     "feasibility",
+    "set_target_vacancies",
     "residential_developer",
     "non_residential_developer",
     "nrh_simulate",  # non-residential rent hedonic
@@ -37,7 +38,8 @@ orca.run([
     # "travel_model", Fixme: on hold
     # "housing_value_update", Fixme: maybe we don't need
 ],
-    iter_vars=range(2016, 2045 + 1),
+    # iter_vars=range(2016, 2045 + 1),
+    iter_vars=range(2016, 2016 + 5 + 1),
     data_out=data_out,
     out_base_tables=['jobs', 'employment_sectors', 'annual_relocation_rates_for_jobs',
                      'households', 'persons', 'annual_relocation_rates_for_households',
@@ -56,6 +58,6 @@ orca.run([
 
 output_indicators.main(data_out)
 
-dir_out = data_out.replace('.h5', '')
-shutil.copytree(dir_out, '/mnt/hgfs/U/RDF2045/model_runs/' + os.path.basename(os.path.normpath(dir_out)))
-shutil.copy(data_out, '/mnt/hgfs/J')
+# dir_out = data_out.replace('.h5', '')
+# shutil.copytree(dir_out, '/mnt/hgfs/U/RDF2045/model_runs/' + os.path.basename(os.path.normpath(dir_out)))
+# shutil.copy(data_out, '/mnt/hgfs/J')
