@@ -38,8 +38,8 @@ orca.run([
     # "travel_model", Fixme: on hold
     # "housing_value_update", Fixme: maybe we don't need
 ],
-    # iter_vars=range(2016, 2045 + 1),
-    iter_vars=range(2016, 2016 + 5 + 1),
+    iter_vars=range(2016, 2045 + 1),
+    # iter_vars=range(2016, 2016 + 5 + 1),
     data_out=data_out,
     out_base_tables=['jobs', 'employment_sectors', 'annual_relocation_rates_for_jobs',
                      'households', 'persons', 'annual_relocation_rates_for_households',
