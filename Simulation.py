@@ -8,10 +8,10 @@ from urbansim.utils import misc, networks
 import output_indicators
 
 data_out = utils.get_run_filename()
-run_num = misc.get_run_number()
+run_log = (data_out.split('.')[:-1] + ['log']).join('.')
 
-print '***The Standard stream is being written to /runs/run{0}.log***'.format(run_num)
-sys.stdout = sys.stderr = open("runs/run%d.log" % run_num, 'w')
+print('***The Standard stream is being written to {}***'.format(run_log))
+sys.stdout = sys.stderr = open(run_log, 'w')
 
 orca.run(['build_networks',
           "neighborhood_vars",
