@@ -32,14 +32,14 @@ orca.run([
     "rsh_simulate",  # residential sales hedonic
     "hlcm_simulate",  # households location choice
     "elcm_simulate",  # employment location choice
-    # "government_jobs_scaling_model",
-    # "refiner",
+    "government_jobs_scaling_model",
+    "refiner",
     # "gq_model", Fixme: we have new data so need new approach
     # "travel_model", Fixme: on hold
     # "housing_value_update", Fixme: maybe we don't need
 ],
-    # iter_vars=range(2016, 2045 + 1),
-    iter_vars=range(2016, 2016 + 5 + 1),
+    iter_vars=range(2016, 2045 + 1),
+    # iter_vars=range(2016, 2016 + 5 + 1),
     data_out=data_out,
     out_base_tables=['jobs', 'employment_sectors', 'annual_relocation_rates_for_jobs',
                      'households', 'persons', 'annual_relocation_rates_for_households',
@@ -52,7 +52,7 @@ orca.run([
                      'transit_stops', 'crime_rates', 'schools', 'poi',
                      'annual_household_control_totals',
                      'events_addition', 'events_deletion', 'refiner_events'],
-    out_run_tables=['buildings', 'jobs', 'parcels', 'households', 'persons', 'dropped_buildings'],
+    out_run_tables=['buildings', 'jobs', 'parcels', 'households', 'persons', 'dropped_buildings', 'feasibility'],
     out_interval=1,
     compress=True)
 
