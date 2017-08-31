@@ -542,10 +542,16 @@ def parcel_average_price(use):
                         parcels_wrapper.nodeid_walk)
 
 
+def high_prices(use):
+    parcels_wrapper = orca.get_table('parcels')
+    return pd.Series(index=parcels_wrapper.index,
+                     data=9999)
+
+
 @orca.step('feasibility')
 def feasibility(parcels):
     parcel_utils.run_feasibility(parcels,
-                                 parcel_average_price,
+                                 high_prices,
                                  variables.parcel_is_allowed,
                                  cfg='proforma.yaml')
     feasibility = orca.get_table('feasibility').to_frame()
@@ -597,8 +603,11 @@ def run_developer(lid, forms, agents, buildings, supply_fname,
                                       ave_unit_size, current_units,
                                       orca.get_injectable('year'), str_or_buffer=cfg)
 
-    print("{:,} feasible buildings before running developer".format(
-        len(dev.feasibility)))
+    df = dev.feasibility.copy()
+    df = df.loc[df.max_profit_far > 0]
+
+    print("{:,} feasible buildings before running developer".format(len(df)))
+    print("filtered from {:,} buildings".format(len(dev.feasibility)))
 
     new_buildings = dev.pick(profit_to_prob_func, custom_selection_func)
     orca.add_table('feasibility_' + str(lid), dev.feasibility)
