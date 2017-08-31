@@ -545,7 +545,7 @@ def parcel_average_price(use):
 def high_prices(use):
     parcels_wrapper = orca.get_table('parcels')
     return pd.Series(index=parcels_wrapper.index,
-                     data=9999)
+                     data=200)
 
 
 @orca.step('feasibility')
@@ -604,9 +604,18 @@ def run_developer(lid, forms, agents, buildings, supply_fname,
                                       orca.get_injectable('year'), str_or_buffer=cfg)
 
     df = dev.feasibility.copy()
-    df = df.loc[df.max_profit_far > 0]
 
-    print("{:,} feasible buildings before running developer".format(len(df)))
+    if forms == 'residential':
+        df = df['residential']
+        df = df.loc[df.max_profit_far > 0]
+        print("{:,} feasible residential buildings before running developer"
+              .format(len(df)))
+    elif isinstance(forms, list):
+        for form in forms:
+            df = df[form]
+            df = df.loc[df.max_profit_far > 0]
+            print("{:,} feasible {} buildings before running developer"
+                  .format(len(df), form))
     print("filtered from {:,} buildings".format(len(dev.feasibility)))
 
     new_buildings = dev.pick(profit_to_prob_func, custom_selection_func)
