@@ -1,0 +1,13 @@
+name: semcog_urbansim
+dependencies:
+- python
+- cytoolz
+- toolz
+- numpy
+- pandas
+- pip
+- scipy
+- statsmodels
+- pytables
+- pytest
+- pyyaml
