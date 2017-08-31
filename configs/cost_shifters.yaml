@@ -1,0 +1,24 @@
+calibration:
+
+    calibration_geography_id: large_area_id
+
+    proforma_cost_shifters:
+        residential:
+            3: 0.5
+            5: 0.5
+            93: 0.5
+            99: 0.5
+            115: 2.0
+            125: 2.0
+            147: 2.0
+            161: 2.0
+        non_residential:
+            3: 0.5
+            5: 0.5
+            93: 0.5
+            99: 0.5
+            115: 2.0
+            125: 2.0
+            147: 2.0
+            161: 2.0
+
