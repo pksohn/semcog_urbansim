@@ -582,7 +582,7 @@ def feasibility(parcels):
                                  parcel_average_price,
                                  variables.parcel_is_allowed,
                                  cfg='proforma.yaml',
-                                 # modify_costs=cost_shifter_callback
+                                 modify_costs=cost_shifter_callback
                                  )
     feasibility = orca.get_table('feasibility').to_frame()
     for lid, df in parcels.large_area_id.to_frame().groupby('large_area_id'):
