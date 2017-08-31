@@ -612,10 +612,10 @@ def run_developer(lid, forms, agents, buildings, supply_fname,
               .format(len(df)))
     elif isinstance(forms, list):
         for form in forms:
-            df = df[form]
-            df = df.loc[df.max_profit_far > 0]
+            df_form = df[form]
+            df_form = df_form.loc[df_form.max_profit_far > 0]
             print("{:,} feasible {} buildings before running developer"
-                  .format(len(df), form))
+                  .format(len(df_form), form))
     print("filtered from {:,} buildings".format(len(dev.feasibility)))
 
     new_buildings = dev.pick(profit_to_prob_func, custom_selection_func)
