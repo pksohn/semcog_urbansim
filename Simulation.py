@@ -19,8 +19,6 @@ orca.run(['build_networks',
           "rsh_simulate",  # residential sales hedonic
           ])
 
-large_area_ids = [5, 3, 125, 99, 161, 115, 147, 93]
-
 orca.run([
     "neighborhood_vars",
     "households_transition",
@@ -59,8 +57,7 @@ orca.run([
                      'annual_household_control_totals',
                      'events_addition', 'events_deletion', 'refiner_events'],
     out_run_tables=(['buildings', 'jobs', 'parcels', 'households', 'persons',
-                     'dropped_buildings', 'feasibility']
-                    + ['feasibility_{}'.format(n) for n in large_area_ids]),
+                     'dropped_buildings', 'feasibility']),
     out_interval=1,
     compress=True)
 

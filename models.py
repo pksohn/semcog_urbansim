@@ -551,7 +551,7 @@ def high_prices(use):
 @orca.step('feasibility')
 def feasibility(parcels):
     parcel_utils.run_feasibility(parcels,
-                                 high_prices,
+                                 parcel_average_price,
                                  variables.parcel_is_allowed,
                                  cfg='proforma.yaml')
     feasibility = orca.get_table('feasibility').to_frame()
